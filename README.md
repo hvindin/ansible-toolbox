@@ -37,6 +37,15 @@ The following additional options are simply proxies to the equivalent
 - `--user`, `-u` *user*
 - `--inventory`, `-i` *inventory*
 - `--extra-vars`, `-e` *vars*
+- `--private-key` *keyfile*
+- `--ask-pass`, `-k`
+- `--vault-password-file` *file*
+- `--ask-vault-pass`
+- `--tags`, `-t` *tags*
+- `--list-tags`
+- `--skip-tags`
+- `--start-at-task` *task name*
+- `--step`
 
 ## Installation
 

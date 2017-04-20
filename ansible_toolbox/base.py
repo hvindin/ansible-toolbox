@@ -41,6 +41,32 @@ class BaseApp (object):
         g.add_argument('--ask-become-pass', '-K',
                        action='store_true')
 
+        g = p.add_argument_group('Key')
+        g.add_argument('--private-key')
+        g.add_argument('--ask-pass', '-k',
+                       action='store_true')
+
+        g = p.add_argument_group('Vault')
+        g.add_argument('--vault-password-file')
+        g.add_argument('--ask-vault-pass',
+                        action='store_true')
+
+        g = p.add_argument_group('Tags')
+        g.add_argument('-t', '--tags',
+                        action='append',
+                        default=[])
+
+        g.add_argument('--list-tags',
+                        action='store_true')
+        g.add_argument('--skip-tags',
+                         action='append',
+                         default=[])
+
+        g = p.add_argument_group('Task')
+        g.add_argument('--start-at-task')
+        g.add_argument('--step',
+                        action='store_true')
+
         p.set_defaults(gather=True)
         return p
 
@@ -51,7 +77,7 @@ class BaseApp (object):
     def build_command_line(self, args):
         cmd = []
 
-        ap_args = [('-e', x) for x in args.extra_vars]
+        ap_args = [('-e', x) for x in args.extra_vars] + [('-t', x) for x in args.tags] + [('--skip-tags',x) for x in args.skip_tags]
         if args.inventory:
             cmd.extend(('-i', args.inventory))
 
@@ -60,6 +86,27 @@ class BaseApp (object):
             
         if args.ask_become_pass:
             cmd.append('-K')
+
+        if args.ask_pass:
+            cmd.append('-k')
+
+        if args.ask_vault_pass:
+            cmd.append('--ask-vault-pass')
+
+        if args.list_tags:
+            cmd.append('--list-tags')
+
+        if args.step:
+            cmd.append('--step')
+
+        if args.private_key:
+            cmd.extend(('--private-key', args.private_key))
+
+        if args.vault_password_file:
+            cmd.extend(('--vault-password-file', args.vault_password_file))
+
+        if args.start_at_task:
+            cmd.extend(('--start-at-task', args.start_at_task))
 
         if args.user:
             cmd.extend(('-u', args.user))
